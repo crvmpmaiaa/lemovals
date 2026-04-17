@@ -627,17 +627,20 @@ section { padding: var(--sp-16) 0; }
   transform: translateY(-4px);
 }
 @media (max-width: 640px) {
-  /* Shorter scroll so the animation plays through faster and the next
-     section is visible sooner after the van finishes. */
-  .scroll-stop-track { height: 200vh; }
-  /* Kill the gap between the hero and the van so they feel continuous. */
+  /* Mobile: show the video at its natural 16:9 aspect, inline (no sticky).
+     Canvas fills width, height locked to 9/16 of that width — so the frames
+     draw edge-to-edge with no letterbox bars and no zoom/crop. */
+  .scroll-stop-sticky {
+    position: relative;
+    top: auto;
+    height: 56.25vw;  /* 9/16 of 100vw */
+    display: block;
+  }
+  .scroll-stop-track { height: auto; }
+  /* Hero flows straight into the van section. */
   .hero.hero-centered { padding-bottom: 0; }
-  /* And between the van and the payoff copy block. */
+  /* Payoff sits right after the video. */
   .scroll-stop-payoff { padding-top: var(--sp-8); }
-  /* Dead styles kept harmlessly — the annotation overlay was removed earlier. */
-  .scroll-stop-annotations { bottom: 3vh; gap: var(--sp-2); }
-  .annotation-card { min-width: 0; flex: 1; padding: var(--sp-3); }
-  .annotation-card p { display: none; }
 }
 
 /* --- STAT BAR ----------------------------------------------------------- */

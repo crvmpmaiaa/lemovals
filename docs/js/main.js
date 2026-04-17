@@ -176,9 +176,23 @@
     const updateProgress = () => {
       pending = false;
       const rect = scrollStop.getBoundingClientRect();
-      const total = rect.height - window.innerHeight;
-      const scrolled = -rect.top;
-      const progress = Math.max(0, Math.min(1, scrolled / total));
+      const vh = window.innerHeight;
+      let progress;
+      if (rect.height <= vh) {
+        // Inline layout (mobile): section is shorter than the viewport, so
+        // sticky pinning doesn't apply. Scrub as the section enters/exits:
+        // 0 when section top is at viewport bottom, 1 when section bottom
+        // is at viewport top.
+        const total = vh + rect.height;
+        const scrolled = vh - rect.top;
+        progress = Math.max(0, Math.min(1, scrolled / total));
+      } else {
+        // Sticky layout (desktop): progress = how far we've scrolled through
+        // the pinned track.
+        const total = rect.height - vh;
+        const scrolled = -rect.top;
+        progress = Math.max(0, Math.min(1, scrolled / total));
+      }
       const idx = Math.min(frameCount - 1, Math.floor(progress * frameCount));
       if (idx !== currentFrame) {
         currentFrame = idx;
