@@ -138,7 +138,12 @@
 
   if (scrollStop && canvas && !reducedMotion) {
     const frameCount = parseInt(scrollStop.dataset.frames || '0', 10);
-    const framePath = scrollStop.dataset.framePath || '/assets/frames/frame_';
+    // Pick the smaller frame set on narrow viewports so decode is faster
+    // and the preload weight is manageable over mobile connections.
+    const useSmallFrames = window.matchMedia('(max-width: 640px)').matches;
+    const framePath = useSmallFrames && scrollStop.dataset.frameSmPath
+      ? scrollStop.dataset.frameSmPath
+      : (scrollStop.dataset.framePath || 'assets/frames/frame_');
     const frameExt = scrollStop.dataset.frameExt || '.jpg';
     const ctx = canvas.getContext('2d');
     const frames = [];
@@ -214,13 +219,15 @@
       }
     };
 
-    // Preload frames (sequential-parallel — all start, first is drawn when ready)
+    // Preload frames (sequential-parallel — all start, first is drawn when
+    // ready). Force decode() so frames are GPU-ready before scroll kicks in —
+    // removes on-demand decode jank when scrubbing on mobile.
     for (let i = 1; i <= frameCount; i++) {
       const img = new Image();
       img.decoding = 'async';
       const n = String(i).padStart(4, '0');
       img.src = `${framePath}${n}${frameExt}`;
-      img.onload = () => {
+      const markLoaded = () => {
         loaded++;
         if (i === 1) { // draw first frame ASAP so the section isn't blank
           sizeCanvas();
@@ -228,6 +235,14 @@
         }
         if (loaded === frameCount) updateProgress();
       };
+      img.onload = () => {
+        if (typeof img.decode === 'function') {
+          img.decode().then(markLoaded).catch(markLoaded);
+        } else {
+          markLoaded();
+        }
+      };
+      img.onerror = markLoaded; // don't stall the total-loaded counter on 404
       frames.push(img);
     }
 
