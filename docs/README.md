@@ -15,11 +15,9 @@ docs/
 ├── areas/
 │   ├── index.html                 — areas hub
 │   ├── l22-waterloo.html
-│   ├── l23-crosby.html
-│   ├── l30-bootle.html
-│   ├── l20-bootle.html
-│   ├── l5-kirkdale.html
-│   └── l4-walton.html
+│   ├── l23-crosby.html             — covers Crosby, Blundellsands, Thornton, Little Crosby
+│   ├── l37-formby.html
+│   └── pr8-ainsdale.html
 ├── about.html
 ├── reviews.html
 ├── contact.html
