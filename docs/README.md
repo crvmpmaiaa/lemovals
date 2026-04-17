@@ -27,7 +27,7 @@ docs/
 ├── css/main.css                   — design system, components, utilities
 ├── js/main.js                     — nav, reveal, count-up, quote form, scroll-stop
 ├── assets/
-│   ├── logo.svg                   — placeholder word-mark
+│   ├── logo.png                   — placeholder word-mark
 │   └── frames/                    — reserved for SKILL3D frame sequence
 ├── robots.txt
 └── sitemap.xml
@@ -88,7 +88,7 @@ All files in `docs/` are static — no build step. Upload via FTP/SFTP/S3/whatev
 - [ ] Confirm trading name and registered address — currently "Leigh Dacosta Greaves trading as Lemovals, Crosby, L23"
 - [ ] Confirm insurer (Goods-in-Transit + Public Liability) and add cover limits to footer + About
 - [ ] Confirm Environment Agency waste-carrier registration number (required for clearance service)
-- [ ] Swap `/assets/logo.svg` for the real Lemovals logo if one exists
+- [ ] Swap `/assets/logo.png` for the real Lemovals logo if one exists
 - [ ] Replace placeholder reviews on `/reviews.html` with real Facebook pulls
 - [ ] Update `hello@lemovals.co.uk` everywhere to the real email once set up
 - [ ] Update `https://lemovals.co.uk/` canonical + OG URLs if different domain

@@ -155,10 +155,12 @@ section { padding: var(--sp-16) 0; }
 }
 .brand:hover { color: var(--blue-deep); }
 .brand-mark {
-  width: 32px;
-  height: 32px;
-  display: inline-block;
+  height: 36px;
+  width: auto;
+  display: block;
+  object-fit: contain;
 }
+.footer .brand-mark { height: 32px; }
 
 .nav { display: flex; align-items: center; gap: var(--sp-4); }
 .nav-links {
