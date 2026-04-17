@@ -161,18 +161,13 @@
       const ch = canvas.clientHeight;
       const iw = img.naturalWidth;
       const ih = img.naturalHeight;
-      // Cover-fit on desktop, contain-fit (slightly zoomed) on mobile so the van stays centred
-      const isMobile = window.matchMedia('(max-width: 640px)').matches;
-      let scale, dw, dh, dx, dy;
-      if (isMobile) {
-        scale = Math.min(cw / iw, ch / ih) * 1.08;
-      } else {
-        scale = Math.max(cw / iw, ch / ih);
-      }
-      dw = iw * scale;
-      dh = ih * scale;
-      dx = (cw - dw) / 2;
-      dy = (ch - dh) / 2;
+      // Cover-fit everywhere — the source is van-centred, so cropping sides
+      // keeps the subject visible and avoids white letterbox bands on mobile.
+      const scale = Math.max(cw / iw, ch / ih);
+      const dw = iw * scale;
+      const dh = ih * scale;
+      const dx = (cw - dw) / 2;
+      const dy = (ch - dh) / 2;
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, cw, ch);
       ctx.drawImage(img, dx, dy, dw, dh);

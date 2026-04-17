@@ -627,7 +627,14 @@ section { padding: var(--sp-16) 0; }
   transform: translateY(-4px);
 }
 @media (max-width: 640px) {
-  .scroll-stop-track { height: 250vh; }
+  /* Shorter scroll so the animation plays through faster and the next
+     section is visible sooner after the van finishes. */
+  .scroll-stop-track { height: 200vh; }
+  /* Kill the gap between the hero and the van so they feel continuous. */
+  .hero.hero-centered { padding-bottom: 0; }
+  /* And between the van and the payoff copy block. */
+  .scroll-stop-payoff { padding-top: var(--sp-8); }
+  /* Dead styles kept harmlessly — the annotation overlay was removed earlier. */
   .scroll-stop-annotations { bottom: 3vh; gap: var(--sp-2); }
   .annotation-card { min-width: 0; flex: 1; padding: var(--sp-3); }
   .annotation-card p { display: none; }
