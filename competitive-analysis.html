@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lemovals — Competitive Analysis · Liverpool & North West Removals Market</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #f6f4f0;
+    --card: #fffefa;
+    --ink: #1a1614;
+    --ink-soft: #5a524c;
+    --ink-muted: #8a8178;
+    --accent: #c45d3e;
+    --accent-soft: #e3a491;
+    --rule: #d9d2c6;
+    --rule-soft: #e8e2d5;
+    --shadow: 0 1px 2px rgba(26,22,20,0.04), 0 8px 24px rgba(26,22,20,0.06);
+    --shadow-hover: 0 2px 4px rgba(26,22,20,0.06), 0 18px 48px rgba(196,93,62,0.12);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    font-size: 15px;
+    font-feature-settings: "ss01", "ss02";
+    position: relative;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.09 0 0 0 0 0.07 0 0 0 0.25 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  .page {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 72px 56px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Typography */
+  h1, h2, h3, h4 {
+    font-family: 'Instrument Serif', 'Times New Roman', serif;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 0;
+  }
+  h1 { font-size: 64px; line-height: 1.05; }
+  h2 { font-size: 40px; line-height: 1.1; margin-bottom: 18px; }
+  h3 { font-size: 26px; line-height: 1.2; margin-bottom: 10px; }
+  h4 { font-size: 19px; line-height: 1.3; margin-bottom: 8px; font-family: 'DM Sans', sans-serif; font-weight: 600; letter-spacing: -0.005em; }
+  p { margin: 0 0 14px; color: var(--ink-soft); }
+  strong { color: var(--ink); font-weight: 600; }
+  em { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 1.05em; color: var(--ink); }
+
+  .eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+
+  /* COVER */
+  .cover {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 56px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 56px;
+  }
+  .cover-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .cover-body h1 {
+    margin-top: 120px;
+    max-width: 720px;
+  }
+  .cover-body .sub {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 28px;
+    color: var(--ink-soft);
+    margin-top: 24px;
+    max-width: 620px;
+    line-height: 1.35;
+  }
+  .cover-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+  .badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(196,93,62,0.04);
+  }
+
+  /* Section */
+  section { margin-bottom: 72px; position: relative; }
+  .section-number {
+    font-family: 'Instrument Serif', serif;
+    font-size: 110px;
+    color: var(--rule);
+    line-height: 1;
+    position: absolute;
+    top: -36px;
+    right: 0;
+    z-index: 0;
+    opacity: 0.55;
+  }
+  .section-header {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 28px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--accent);
+    border-radius: 4px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-1px);
+  }
+  .card .rank {
+    font-family: 'Instrument Serif', serif;
+    font-size: 34px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .card h3 { margin-bottom: 4px; }
+  .card .url {
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--ink-muted);
+    font-family: 'DM Sans', monospace;
+    margin-bottom: 18px;
+    display: inline-block;
+  }
+  .card .tagline {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .card dl {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 8px 16px;
+    margin: 12px 0 16px;
+    font-size: 14px;
+  }
+  .card dt {
+    color: var(--ink-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 11px;
+    padding-top: 3px;
+  }
+  .card dd { margin: 0; color: var(--ink-soft); }
+
+  .tags { margin-top: 14px; }
+  .tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(196,93,62,0.08);
+    color: var(--accent);
+    margin: 2px 4px 2px 0;
+    font-weight: 500;
+  }
+  .tag.neutral {
+    background: rgba(26,22,20,0.04);
+    color: var(--ink-soft);
+    border: 1px solid var(--rule);
+  }
+  .tag.warn {
+    background: rgba(196,93,62,0.04);
+    color: var(--accent);
+    border: 1px dashed var(--accent-soft);
+  }
+
+  /* Swatches */
+  .swatches {
+    display: flex;
+    gap: 6px;
+    margin: 6px 0 14px;
+  }
+  .sw {
+    width: 38px;
+    height: 38px;
+    border-radius: 4px;
+    border: 1px solid rgba(26,22,20,0.08);
+    position: relative;
+  }
+  .sw::after {
+    content: attr(data-hex);
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--ink-muted);
+    font-family: 'DM Sans', monospace;
+    white-space: nowrap;
+  }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; margin: 20px 0 8px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  th {
+    text-align: left;
+    padding: 12px 14px;
+    background: rgba(196,93,62,0.06);
+    color: var(--ink);
+    font-weight: 600;
+    border-bottom: 1px solid var(--rule);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--rule-soft);
+    color: var(--ink-soft);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: 0; }
+  tr.winner td { background: rgba(196,93,62,0.04); }
+  tr.winner td:first-child { color: var(--accent); font-weight: 600; }
+  td.score { font-family: 'Instrument Serif', serif; font-size: 17px; color: var(--accent); text-align: center; }
+
+  /* Pattern list */
+  .pattern {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 18px;
+    padding: 22px 0;
+    border-bottom: 1px dashed var(--rule);
+    align-items: start;
+  }
+  .pattern:last-child { border-bottom: 0; }
+  .pattern-num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 42px;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .pattern h4 { margin-bottom: 6px; }
+
+  /* Flow connectors */
+  .connector {
+    display: flex;
+    justify-content: center;
+    margin: -10px 0 -10px;
+    opacity: 0.55;
+  }
+  .connector svg { display: block; }
+
+  /* Exec summary */
+  .exec {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 32px 36px;
+    box-shadow: var(--shadow);
+  }
+  .exec p { font-size: 17px; line-height: 1.6; color: var(--ink); }
+  .exec p:last-child { margin-bottom: 0; }
+
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin: 30px 0;
+  }
+  .kpi {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    padding: 20px 18px;
+    border-radius: 4px;
+    text-align: center;
+  }
+  .kpi .num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 44px;
+    color: var(--accent);
+    line-height: 1;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .kpi .label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  /* Keyword callouts */
+  .kw-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .kw {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent-soft);
+    padding: 16px 20px;
+    border-radius: 4px;
+  }
+  .kw h5 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 4px;
+    color: var(--ink);
+  }
+  .kw p { font-size: 13px; margin: 0; }
+  .kw.opportunity { border-left-color: var(--accent); background: rgba(196,93,62,0.03); }
+
+  /* Recommend list */
+  .rec-list { list-style: none; padding: 0; margin: 0; }
+  .rec-list li {
+    padding: 14px 0 14px 30px;
+    border-bottom: 1px dashed var(--rule);
+    position: relative;
+    color: var(--ink-soft);
+  }
+  .rec-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    top: 14px;
+    color: var(--accent);
+    font-family: 'Instrument Serif', serif;
+    font-size: 20px;
+  }
+  .rec-list li:last-child { border-bottom: 0; }
+  .rec-list strong { display: block; margin-bottom: 2px; color: var(--ink); }
+
+  /* Footer */
+  .doc-footer {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .page { padding: 40px 24px; }
+    h1 { font-size: 40px; }
+    h2 { font-size: 28px; }
+    h3 { font-size: 21px; }
+    .section-number { font-size: 70px; top: -20px; }
+    .card { padding: 22px 20px; }
+    .card dl { grid-template-columns: 1fr; gap: 4px; }
+    .card dt { padding-top: 10px; }
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .kw-grid { grid-template-columns: 1fr; }
+    .cover-body h1 { margin-top: 60px; }
+    .cover-body .sub { font-size: 22px; }
+    .pattern { grid-template-columns: 1fr; gap: 6px; }
+    .pattern-num { font-size: 32px; }
+  }
+
+  /* Print */
+  @media print {
+    @page { size: A4; margin: 18mm 14mm; }
+    body { font-size: 11pt; }
+    body::before { display: none; }
+    .page { max-width: 100%; padding: 0; }
+    .cover { min-height: auto; page-break-after: always; }
+    section { page-break-inside: avoid; margin-bottom: 32px; }
+    .card, .exec, .kpi, .kw { page-break-inside: avoid; box-shadow: none; }
+    h1 { font-size: 44pt; }
+    h2 { font-size: 22pt; }
+    h3 { font-size: 15pt; }
+    .card:hover { transform: none; box-shadow: none; }
+    a { color: var(--ink); text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-meta">
+      <span>Lemovals · Liverpool</span>
+      <span>April 2026</span>
+    </div>
+    <div class="cover-body">
+      <span class="badge">Competitive Analysis</span>
+      <h1>The North West removals market, end-to-end.</h1>
+      <p class="sub">Ten competitors researched. Five deep-profiled. Seven patterns the winners share — and the white space Lemovals can own.</p>
+    </div>
+    <div class="cover-footer">
+      <span>Prepared for Lemovals</span>
+      <span>Research-driven competitive intelligence</span>
+    </div>
+  </div>
+
+  <!-- EXECUTIVE SUMMARY -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">01</span>
+      <div class="eyebrow">Executive Summary</div>
+      <h2>The Liverpool removals market is crowded, earnest, and visually conservative.</h2>
+    </div>
+    <div class="exec">
+      <p>Across the ten Liverpool and North West removal companies audited, the competitive floor is surprisingly high — review counts are legitimate, accreditations (BAR, Move Assured, Britannia) are table-stakes, and every operator publishes a recognisable service menu. The ceiling, however, is low. Visual design is uniformly blue-and-white corporate or dated-WordPress-template; only one competitor (Gibbons) has built a quote experience that reduces friction the way a modern buyer expects; and almost no one has invested in memorable motion or brand identity beyond logo-and-tagline.</p>
+      <p>For Lemovals specifically — a Crosby / Waterloo sole trader working under Leigh's name — the win isn't to out-corporate the corporates. It is to look <strong>distinctly more modern and more human</strong> than the template blues, rank for the <strong>home-patch postcodes (L22 · L23 · L30)</strong> that no top-10 operator is optimising for, and use <strong>a cinematic scroll-driven hero</strong> to create the one visual moment none of the competitors have attempted. The brand palette stays blue &amp; white (aligned with Leigh's Facebook) — the differentiation is depth, typography, and motion, not hue.</p>
+    </div>
+    <div class="kpi-row">
+      <div class="kpi"><span class="num">10</span><span class="label">Competitors<br/>audited</span></div>
+      <div class="kpi"><span class="num">5</span><span class="label">Deep<br/>profiles</span></div>
+      <div class="kpi"><span class="num">7</span><span class="label">Patterns<br/>identified</span></div>
+      <div class="kpi"><span class="num">3</span><span class="label">White-space<br/>plays</span></div>
+    </div>
+  </section>
+
+  <div class="connector">
+    <svg width="40" height="60" viewBox="0 0 40 60"><path d="M20 2 L20 58" stroke="#c45d3e" stroke-width="1" stroke-dasharray="3 4" fill="none"/><circle cx="20" cy="58" r="3" fill="#c45d3e"/></svg>
+  </div>
+
+  <!-- COMPETITOR PROFILES -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">02</span>
+      <div class="eyebrow">Top 5 Competitor Profiles</div>
+      <h2>Who the Liverpool buyer is actually choosing between.</h2>
+    </div>
+
+    <!-- Moved Removals -->
+    <div class="card">
+      <div class="rank">01</div>
+      <h3>Moved Removals &amp; Storage</h3>
+      <a class="url">movedremovals.co.uk</a>
+      <div class="tagline">"The highest-rated removals company in Merseyside &amp; Cheshire."</div>
+      <div class="swatches">
+        <span class="sw" data-hex="#1C1F2A" style="background:#1C1F2A"></span>
+        <span class="sw" data-hex="#E6D7C3" style="background:#E6D7C3"></span>
+        <span class="sw" data-hex="#C49A6C" style="background:#C49A6C"></span>
+        <span class="sw" data-hex="#F5F0E9" style="background:#F5F0E9"></span>
+      </div>
+      <dl>
+        <dt>Reviews</dt><dd>4.9 ★ · 422 Trustindex reviews</dd>
+        <dt>Positioning</dt><dd>Review-leadership. Stat-bar headline (3,255 clients · 1,200 moves/yr · 45 yrs · 30+ team).</dd>
+        <dt>Coverage</dt><dd>Wirral, Liverpool, Chester, North West, Ireland &amp; Europe. Dual phone numbers by region.</dd>
+        <dt>CTA strategy</dt><dd>"Get a Free Quote" × 6, links to contact form. No on-page quote wizard.</dd>
+        <dt>Strength</dt><dd>Single strongest review signal in the market, crisp modern layout, live Instagram feed.</dd>
+        <dt>Weakness</dt><dd>No pricing disclosed; quote requires contact form; hero is static.</dd>
+      </dl>
+      <div class="tags">
+        <span class="tag">Highest rated</span>
+        <span class="tag">Award-winning</span>
+        <span class="tag">Strong reviews</span>
+        <span class="tag neutral">Elementor build</span>
+        <span class="tag warn">No pricing</span>
+      </div>
+    </div>
+
+    <!-- Gibbons -->
+    <div class="card">
+      <div class="rank">02</div>
+      <h3>Gibbons Removals</h3>
+      <a class="url">gibbons-removals.co.uk</a>
+      <div class="tagline">"Your trusted local removals company."</div>
+      <div class="swatches">
+        <span class="sw" data-hex="#1F2937" style="background:#1F2937"></span>
+        <span class="sw" data-hex="#FFFFFF" style="background:#FFFFFF"></span>
+        <span class="sw" data-hex="#2B5797" style="background:#2B5797"></span>
+        <span class="sw" data-hex="#F3F4F6" style="background:#F3F4F6"></span>
+      </div>
+      <dl>
+        <dt>Reviews</dt><dd>200+ five-star across Google (75+), Trustpilot (30+), Compare My Move (35+), reallymoving (5+).</dd>
+        <dt>Positioning</dt><dd>Community-first, transparent-pricing, Wirral-native.</dd>
+        <dt>Coverage</dt><dd>Wirral (Birkenhead, West Kirby, Heswall, Bebington, Wallasey), Liverpool, Cheshire, North Wales.</dd>
+        <dt>CTA strategy</dt><dd><strong>4-step quote wizard embedded on homepage</strong> — best execution in the audit.</dd>
+        <dt>Strength</dt><dd>Published pricing range (£400–£1,500). Custom-coded site, fast. Cross-platform review stack.</dd>
+        <dt>Weakness</dt><dd>Expired Trustindex trial banner visible (unprofessional slip). Hero imagery is stock-like.</dd>
+      </dl>
+      <div class="tags">
+        <span class="tag">Best quote UX</span>
+        <span class="tag">Transparent pricing</span>
+        <span class="tag">Multi-platform reviews</span>
+        <span class="tag neutral">Custom build</span>
+      </div>
+    </div>
+
+    <!-- Pickfords -->
+    <div class="card">
+      <div class="rank">03</div>
+      <h3>Pickfords (North West)</h3>
+      <a class="url">pickfords.co.uk/removals-and-storage-north-west</a>
+      <div class="tagline">"A move as individual as you."</div>
+      <div class="swatches">
+        <span class="sw" data-hex="#003366" style="background:#003366"></span>
+        <span class="sw" data-hex="#D4AF37" style="background:#D4AF37"></span>
+        <span class="sw" data-hex="#FFFFFF" style="background:#FFFFFF"></span>
+        <span class="sw" data-hex="#E6E8EC" style="background:#E6E8EC"></span>
+      </div>
+      <dl>
+        <dt>Reviews</dt><dd>40+ named customer tweets + celebrity testimonial (Ben Stokes).</dd>
+        <dt>Positioning</dt><dd>Heritage (hundreds of years), premium tier (Pickfords Gold), full-service corporate.</dd>
+        <dt>Coverage</dt><dd>Every UK postcode; 15+ NW sub-area landing pages (Blackburn, Chester, Liverpool, Manchester, Preston, Wirral&hellip;).</dd>
+        <dt>CTA strategy</dt><dd>Postcode-based price calculator in hero; segmented phone numbers (home/business/corporate).</dd>
+        <dt>Strength</dt><dd><strong>Only operator with a carbon-neutral story.</strong> Multi-tier service taxonomy. Best SEO footprint.</dd>
+        <dt>Weakness</dt><dd>Visually dated; slow; overwhelming nav; feels corporate at odds with buyer intent.</dd>
+      </dl>
+      <div class="tags">
+        <span class="tag">National benchmark</span>
+        <span class="tag">Carbon neutral</span>
+        <span class="tag">Pickfords Gold tier</span>
+        <span class="tag neutral">Sitefinity CMS</span>
+        <span class="tag warn">Dated design</span>
+      </div>
+    </div>
+
+    <!-- Britannia Fleet -->
+    <div class="card">
+      <div class="rank">04</div>
+      <h3>Britannia Fleet</h3>
+      <a class="url">fleetremovals.co.uk</a>
+      <div class="tagline">"Liverpool's premier removals specialists."</div>
+      <div class="swatches">
+        <span class="sw" data-hex="#0B3D91" style="background:#0B3D91"></span>
+        <span class="sw" data-hex="#D8261C" style="background:#D8261C"></span>
+        <span class="sw" data-hex="#FFFFFF" style="background:#FFFFFF"></span>
+        <span class="sw" data-hex="#F4F4F4" style="background:#F4F4F4"></span>
+      </div>
+      <dl>
+        <dt>Reviews</dt><dd>Named route-level testimonials. BAR + Which? Trusted Traders listings.</dd>
+        <dt>Positioning</dt><dd>Accreditation-first. Family-run 40+yrs. Part of Britannia Movers Group.</dd>
+        <dt>Coverage</dt><dd>Liverpool &amp; Merseyside; sister brand Britannia Cestrian covers Chester/Wirral/N Wales.</dd>
+        <dt>CTA strategy</dt><dd>Phone prominent + "Call me back" option (smart). reCAPTCHA-gated form.</dd>
+        <dt>Strength</dt><dd>BAR member, BS EN 12522 accredited, Britannia Movers Group, specialist international &amp; storage arms.</dd>
+        <dt>Weakness</dt><dd>Duplicate hero blocks (repeats same CTA 3×). Dense text. Mobile likely cramped.</dd>
+      </dl>
+      <div class="tags">
+        <span class="tag">BAR-accredited</span>
+        <span class="tag">BS EN 12522</span>
+        <span class="tag">40+ years</span>
+        <span class="tag warn">Repetitive hero</span>
+      </div>
+    </div>
+
+    <!-- MWAV -->
+    <div class="card">
+      <div class="rank">05</div>
+      <h3>Man With A Van Liverpool</h3>
+      <a class="url">manwithavanliverpool.co.uk</a>
+      <div class="tagline">"Reliable man-and-van service. Same-day delivery."</div>
+      <div class="swatches">
+        <span class="sw" data-hex="#000000" style="background:#000000"></span>
+        <span class="sw" data-hex="#1B4FA8" style="background:#1B4FA8"></span>
+        <span class="sw" data-hex="#FFFFFF" style="background:#FFFFFF"></span>
+        <span class="sw" data-hex="#F2F4F8" style="background:#F2F4F8"></span>
+      </div>
+      <dl>
+        <dt>Reviews</dt><dd>Trustindex verified Google reviews, long inline testimonial wall with names.</dd>
+        <dt>Positioning</dt><dd>Niche small-move specialist. Facebook Marketplace / eBay / Gumtree delivery angle is unique.</dd>
+        <dt>Coverage</dt><dd><strong>15+ Liverpool postcode landing pages</strong> (L15–L27) plus Runcorn, Widnes, St Helens, Wirral, Warrington.</dd>
+        <dt>CTA strategy</dt><dd><strong>WhatsApp-first</strong> — leading indicator. Call + WhatsApp buttons paired throughout.</dd>
+        <dt>Strength</dt><dd>Published price (from £49). Hyper-local SEO. Environment Agency registered (waste removal).</dd>
+        <dt>Weakness</dt><dd>Template-feel design. No pricing calculator for larger jobs. Small-job-only perception.</dd>
+      </dl>
+      <div class="tags">
+        <span class="tag">WhatsApp-first</span>
+        <span class="tag">Published pricing</span>
+        <span class="tag">Postcode SEO</span>
+        <span class="tag neutral">Elementor build</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="connector">
+    <svg width="40" height="60" viewBox="0 0 40 60"><path d="M20 2 L20 58" stroke="#c45d3e" stroke-width="1" stroke-dasharray="3 4" fill="none"/><circle cx="20" cy="58" r="3" fill="#c45d3e"/></svg>
+  </div>
+
+  <!-- COMPARISON -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">03</span>
+      <div class="eyebrow">Comparison · 8-Criteria Scoring</div>
+      <h2>All ten, scored side by side.</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Company</th>
+            <th>Search</th>
+            <th>Reviews</th>
+            <th>Visual</th>
+            <th>Mobile</th>
+            <th>Content</th>
+            <th>Proof</th>
+            <th>CTA</th>
+            <th>Speed</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="winner"><td>Moved Removals</td><td class="score">9</td><td class="score">10</td><td class="score">9</td><td class="score">9</td><td class="score">9</td><td class="score">10</td><td class="score">9</td><td class="score">8</td><td class="score">73</td></tr>
+          <tr class="winner"><td>Gibbons Removals</td><td class="score">8</td><td class="score">9</td><td class="score">9</td><td class="score">9</td><td class="score">9</td><td class="score">9</td><td class="score">10</td><td class="score">8</td><td class="score">71</td></tr>
+          <tr class="winner"><td>Pickfords NW</td><td class="score">10</td><td class="score">9</td><td class="score">7</td><td class="score">8</td><td class="score">10</td><td class="score">10</td><td class="score">8</td><td class="score">7</td><td class="score">69</td></tr>
+          <tr class="winner"><td>Britannia Fleet</td><td class="score">9</td><td class="score">8</td><td class="score">6</td><td class="score">7</td><td class="score">9</td><td class="score">10</td><td class="score">8</td><td class="score">7</td><td class="score">64</td></tr>
+          <tr class="winner"><td>Man With A Van LPL</td><td class="score">7</td><td class="score">9</td><td class="score">6</td><td class="score">7</td><td class="score">8</td><td class="score">8</td><td class="score">9</td><td class="score">7</td><td class="score">61</td></tr>
+          <tr><td>Lions Removals</td><td class="score">8</td><td class="score">8</td><td class="score">7</td><td class="score">7</td><td class="score">8</td><td class="score">8</td><td class="score">7</td><td class="score">7</td><td class="score">60</td></tr>
+          <tr><td>Merseyside Movers</td><td class="score">8</td><td class="score">7</td><td class="score">6</td><td class="score">7</td><td class="score">7</td><td class="score">8</td><td class="score">7</td><td class="score">7</td><td class="score">57</td></tr>
+          <tr><td>Andrew Porter</td><td class="score">7</td><td class="score">7</td><td class="score">5</td><td class="score">6</td><td class="score">7</td><td class="score">7</td><td class="score">7</td><td class="score">7</td><td class="score">53</td></tr>
+          <tr><td>Rocket Removals</td><td class="score">7</td><td class="score">6</td><td class="score">6</td><td class="score">7</td><td class="score">4</td><td class="score">5</td><td class="score">7</td><td class="score">7</td><td class="score">49</td></tr>
+          <tr><td>Keen Removals</td><td class="score">6</td><td class="score">6</td><td class="score">4</td><td class="score">6</td><td class="score">5</td><td class="score">5</td><td class="score">5</td><td class="score">6</td><td class="score">43</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12px;color:var(--ink-muted);margin-top:10px;">Criteria: Search visibility · Review quality &amp; volume · Visual design · Mobile responsiveness · Content depth · Social proof placement · CTA strategy · Page speed. Scored 1–10.</p>
+  </section>
+
+  <div class="connector">
+    <svg width="40" height="60" viewBox="0 0 40 60"><path d="M20 2 L20 58" stroke="#c45d3e" stroke-width="1" stroke-dasharray="3 4" fill="none"/><circle cx="20" cy="58" r="3" fill="#c45d3e"/></svg>
+  </div>
+
+  <!-- SEO -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">04</span>
+      <div class="eyebrow">SEO Landscape</div>
+      <h2>Where the search traffic actually goes.</h2>
+    </div>
+    <p>Organic page-1 real estate for key Liverpool removal queries is split between a handful of local operators, two national directories (Reallymoving, Sirelo), and Google's local-pack map listings. Reddit and forum threads leak into the top 10 — evidence that buyer trust in incumbents is not watertight.</p>
+    <div class="kw-grid">
+      <div class="kw"><h5>"removals Liverpool"</h5><p>Britannia Fleet, Lions, Rocket + directory stacks (Sirelo, Reallymoving). Reddit thread for Atlas Removals sits at #1 — rare signal of unmet demand.</p></div>
+      <div class="kw"><h5>"man and van Liverpool"</h5><p>Crowded. MWAV Liverpool and Merseyside Van Man dominate; Facebook pages punch above weight. Google Maps is the decisive surface.</p></div>
+      <div class="kw"><h5>"house removals Liverpool"</h5><p>Britannia Fleet, Merseyside Movers, Lions, Keen all cluster on page 1. No operator has a clearly winning on-page SEO structure.</p></div>
+      <div class="kw"><h5>"North West removals"</h5><p>NW Removals, Pickfords, Andrew Porter, Gibbons battle it out — Pickfords takes most local-pack juice.</p></div>
+      <div class="kw opportunity"><h5>Opportunity · Postcode pages (L1–L40)</h5><p>Only MWAV Liverpool has built a full postcode page set. A polished premium version is open.</p></div>
+      <div class="kw opportunity"><h5>Opportunity · Student removals</h5><p>Rocket, Lions and MWAV touch it; no one owns it. Liverpool has 70k+ students — predictable September and June demand.</p></div>
+      <div class="kw opportunity"><h5>Opportunity · Eco / carbon-neutral removals</h5><p>Pickfords is the only player with this angle — and only at national level. Entirely open locally.</p></div>
+      <div class="kw opportunity"><h5>Opportunity · Office relocation Merseyside</h5><p>B2B positioning is under-served by Liverpool locals. Pickfords dominates by default.</p></div>
+    </div>
+  </section>
+
+  <div class="connector">
+    <svg width="40" height="60" viewBox="0 0 40 60"><path d="M20 2 L20 58" stroke="#c45d3e" stroke-width="1" stroke-dasharray="3 4" fill="none"/><circle cx="20" cy="58" r="3" fill="#c45d3e"/></svg>
+  </div>
+
+  <!-- PATTERNS -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">05</span>
+      <div class="eyebrow">Patterns of the Top 10%</div>
+      <h2>Seven things every winner does.</h2>
+    </div>
+
+    <div class="pattern">
+      <div class="pattern-num">01</div>
+      <div>
+        <h4>Review-count as headline copy, not a footer badge.</h4>
+        <p>Moved's <em>"4.9 / 422"</em>, Gibbons' <em>"200+ five-star"</em>, MWAV's Trustindex widget — each treats aggregate rating as hero material. Multi-platform counts (Gibbons shows four) outperform a single aggregated number.</p>
+      </div>
+    </div>
+    <div class="pattern">
+      <div class="pattern-num">02</div>
+      <div>
+        <h4>A "get a quote" primitive — not a contact form.</h4>
+        <p>Gibbons' 4-step wizard and Pickfords' postcode calculator outperform every plain contact form. Lowering the commitment threshold materially improves conversion on move-intent traffic.</p>
+      </div>
+    </div>
+    <div class="pattern">
+      <div class="pattern-num">03</div>
+      <div>
+        <h4>Accreditation wall, grouped.</h4>
+        <p>BAR, Which? Trusted Traders, Move Assured, Trustindex, ISO — displayed together near the hero. Trust is scaled using <em>other people's</em> brands, not marketing copy.</p>
+      </div>
+    </div>
+    <div class="pattern">
+      <div class="pattern-num">04</div>
+      <div>
+        <h4>Explicit coverage list.</h4>
+        <p>Every winner publishes a scannable list of towns or postcodes served. Ambiguous coverage costs local SEO and trust. MWAV and Pickfords execute this best.</p>
+      </div>
+    </div>
+    <div class="pattern">
+      <div class="pattern-num">05</div>
+      <div>
+        <h4>Services as cards, not paragraphs.</h4>
+        <p>4–8 equal-weight service tiles (house, office, man-and-van, student, piano, storage, packing) with icon, two-line blurb, "Learn More". No winner buries services in body copy.</p>
+      </div>
+    </div>
+    <div class="pattern">
+      <div class="pattern-num">06</div>
+      <div>
+        <h4>Multiple contact modes, paired.</h4>
+        <p>Phone + WhatsApp + quote form + call-back request. MWAV's WhatsApp-first is the leading indicator for the next-gen winner — none of the top 4 have it yet.</p>
+      </div>
+    </div>
+    <div class="pattern">
+      <div class="pattern-num">07</div>
+      <div>
+        <h4>Real numbers, displayed as a stat-bar.</h4>
+        <p>Moved's <em>"3,255 happy clients · 1,200 moves/yr · 45 years · 30+ team"</em> is the single most imitated device across the top tier. Specificity is the credibility lever.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="connector">
+    <svg width="40" height="60" viewBox="0 0 40 60"><path d="M20 2 L20 58" stroke="#c45d3e" stroke-width="1" stroke-dasharray="3 4" fill="none"/><circle cx="20" cy="58" r="3" fill="#c45d3e"/></svg>
+  </div>
+
+  <!-- WHAT TO AVOID -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">06</span>
+      <div class="eyebrow">What The Losers Do</div>
+      <h2>The avoid-list, drawn from real failures.</h2>
+    </div>
+    <ul class="rec-list">
+      <li><strong>Placeholder or lorem-feel copy.</strong> Rocket's service descriptions include sentences like <em>"Procuring education on consulted assurance&hellip;"</em> — transparent template filler that kills credibility.</li>
+      <li><strong>Duplicated hero blocks.</strong> Britannia Fleet repeats the same packing/house-move card three times on the homepage. Signals rushed build, not intentional design.</li>
+      <li><strong>Expired SaaS trial banners visible to visitors.</strong> Gibbons' Trustindex trial-expired banner slips through live. Visual quality control is a discipline.</li>
+      <li><strong>Template-Wix builds with repeat stock imagery.</strong> Keen Removals uses the same photo for six different service tiles. Looks unfinished.</li>
+      <li><strong>No published pricing anywhere.</strong> Pickfords, Moved, Britannia Fleet, Lions — all gate any estimate behind a form. Gibbons and MWAV prove transparency converts.</li>
+      <li><strong>Slow, un-lazy-loaded image heroes.</strong> Visibly laggy on mobile. Lighthouse scores below 60 are common.</li>
+    </ul>
+  </section>
+
+  <div class="connector">
+    <svg width="40" height="60" viewBox="0 0 40 60"><path d="M20 2 L20 58" stroke="#c45d3e" stroke-width="1" stroke-dasharray="3 4" fill="none"/><circle cx="20" cy="58" r="3" fill="#c45d3e"/></svg>
+  </div>
+
+  <!-- RECOMMENDATIONS -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">07</span>
+      <div class="eyebrow">Recommended Design Direction</div>
+      <h2>Where Lemovals can own the market.</h2>
+    </div>
+
+    <h3 style="margin-top:24px;">Brand &amp; palette</h3>
+    <p>Lemovals' existing Facebook identity is blue &amp; white — we keep it. The lane is busy (Pickfords, Britannia, Lions, Fleet all trade in blue) so the differentiation comes from <em>depth, typography, and motion</em>, not hue. A deep trust-blue paired with generous white and disciplined type beats a washed-out template blue every time.</p>
+    <div class="swatches" style="margin: 20px 0 32px;">
+      <span class="sw" data-hex="#0b3d91" style="background:#0b3d91"></span>
+      <span class="sw" data-hex="#071f4a" style="background:#071f4a"></span>
+      <span class="sw" data-hex="#3d7be8" style="background:#3d7be8"></span>
+      <span class="sw" data-hex="#e8eef7" style="background:#e8eef7"></span>
+      <span class="sw" data-hex="#ffffff" style="background:#ffffff"></span>
+    </div>
+
+    <h3 style="margin-top:36px;">Typography</h3>
+    <p>Space Grotesk (display) + Archivo (body) + JetBrains Mono (numerals). Locked to the SKILL3D animation-creator stack so the scroll-stop hero typography is seamless with the rest of the site.</p>
+
+    <h3 style="margin-top:36px;">Motion — the real differentiator</h3>
+    <p>The category is visually static. A cinematic scroll-driven hero video (via local SKILL3D + SKILLassets skills) is where Lemovals actually pulls ahead — not in palette.</p>
+    <ul class="rec-list">
+      <li><strong>Scroll-scrubbed hero video</strong> — van-reveal or boxes-stack archetype. 3–6 s clip, first frame on white, rendered frame-by-frame by canvas as the user scrolls.</li>
+      <li><strong>Snap-stop annotation cards</strong> at three beats in the scroll — "Pack carefully" · "Load properly" · "Deliver on time".</li>
+      <li><strong>Count-up stat bar</strong> — moves completed · years trading · ★ rating · areas covered. Real numbers, specific not rounded.</li>
+      <li><strong>Pill-transform navbar on scroll;</strong> glass-morphism feature cards; subtle animated starscape.</li>
+      <li><strong>Respect <code>prefers-reduced-motion</code></strong> — degrades to a static first-frame hero image.</li>
+    </ul>
+
+    <h3 style="margin-top:36px;">Conversion mechanics</h3>
+    <ul class="rec-list">
+      <li><strong>Phone as the primary CTA.</strong> Leigh's 07479222460 in the nav, after each service, in the footer, and as a sticky mobile call button.</li>
+      <li><strong>Short quote form as secondary.</strong> Six fields max — name · phone · from postcode · to postcode · date · notes.</li>
+      <li><strong>Facebook Message</strong> as a third route — mirrors where Leigh's existing audience already knows him.</li>
+      <li><strong>Accreditation row.</strong> Goods-in-Transit + Public Liability + Environment Agency waste-carrier licence, grouped near the hero. Apply for BAR / Move Assured alongside the build.</li>
+    </ul>
+
+    <h3 style="margin-top:36px;">SEO &amp; content</h3>
+    <ul class="rec-list">
+      <li><strong>Home-patch postcode pages first:</strong> L22 · L23 · L30 · L20 · L5 · L4. These are winnable because they're under-optimised locally; wider Liverpool-city terms are saturated.</li>
+      <li><strong>Service-type pages</strong> matching Leigh's actual Facebook offer: house &amp; flat moves · storage runs · house &amp; garage clearances · appliance removals (fridges, washing machines).</li>
+      <li><strong>Reviews hub</strong> aggregating Facebook + Google testimonials — Leigh's real social proof.</li>
+      <li><strong>About Leigh page</strong> — the sole-trader story is a differentiator against faceless corporate operators; lean into it.</li>
+    </ul>
+  </section>
+
+  <div class="doc-footer">
+    <span>Lemovals · Competitive Analysis</span>
+    <span>Phase 2 · Research deliverable</span>
+    <span>April 2026</span>
+  </div>
+
+</div>
+
+</body>
+</html>
