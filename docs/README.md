@@ -5,7 +5,7 @@ A local-business website for **Lemovals** — a removal company based in Crosby 
 ## What's here
 
 ```
-site/
+docs/
 ├── index.html                     — home
 ├── services/
 │   ├── house-and-flat-moves.html
@@ -36,7 +36,7 @@ site/
 ## Run locally
 
 ```bash
-cd site
+cd docs
 python3 -m http.server 8080
 open http://localhost:8080
 ```
@@ -57,7 +57,7 @@ A placeholder is wired in on `index.html` — look for `<!-- 3D SCROLL ASSET HER
 To drop in the real scroll-scrubbed hero video:
 
 1. Generate the asset using `../SKILLassets.md` (nano banana 2 + seedance). Target: 3–6s, first frame on white, single-take focal transformation.
-2. Extract frames with FFmpeg into `site/assets/frames/` (see `SKILL3D.md` for exact commands).
+2. Extract frames with FFmpeg into `docs/assets/frames/` (see `SKILL3D.md` for exact commands).
 3. Replace the placeholder gradient/canvas inside `.scroll-stop-canvas` with the frame-rendering canvas code from `SKILL3D.md`.
 4. Keep the annotation cards — they're already positioned and will snap-activate as scroll progress advances.
 
@@ -66,22 +66,22 @@ To drop in the real scroll-scrubbed hero video:
 ### Vercel
 
 ```bash
-cd site
+cd docs
 npx vercel
 ```
 
 ### Netlify
 
-Drag the `site/` folder to the Netlify dashboard, or:
+Drag the `docs/` folder to the Netlify dashboard, or:
 
 ```bash
-cd site
+cd docs
 npx netlify deploy --prod --dir=.
 ```
 
 ### Any static host
 
-All files in `site/` are static — no build step. Upload via FTP/SFTP/S3/whatever.
+All files in `docs/` are static — no build step. Upload via FTP/SFTP/S3/whatever.
 
 ## Before going live — checklist
 
