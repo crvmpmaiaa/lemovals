@@ -178,44 +178,76 @@
       ctx.drawImage(img, dx, dy, dw, dh);
     };
 
-    const updateProgress = () => {
-      pending = false;
+    // Read scroll position and map it to 0..1 progress through the section.
+    // Two layouts: inline (mobile, section ≤ viewport) and sticky (desktop).
+    const calcProgress = () => {
       const rect = scrollStop.getBoundingClientRect();
       const vh = window.innerHeight;
-      let progress;
       if (rect.height <= vh) {
-        // Inline layout (mobile): section is shorter than the viewport, so
-        // sticky pinning doesn't apply. Scrub as the section enters/exits:
-        // 0 when section top is at viewport bottom, 1 when section bottom
-        // is at viewport top.
         const total = vh + rect.height;
         const scrolled = vh - rect.top;
-        progress = Math.max(0, Math.min(1, scrolled / total));
-      } else {
-        // Sticky layout (desktop): progress = how far we've scrolled through
-        // the pinned track.
-        const total = rect.height - vh;
-        const scrolled = -rect.top;
-        progress = Math.max(0, Math.min(1, scrolled / total));
+        return Math.max(0, Math.min(1, scrolled / total));
       }
-      const idx = Math.min(frameCount - 1, Math.floor(progress * frameCount));
+      const total = rect.height - vh;
+      const scrolled = -rect.top;
+      return Math.max(0, Math.min(1, scrolled / total));
+    };
+
+    // Decouple frame display from scroll-event frequency. Scroll events on
+    // iOS momentum scroll fire in big sparse chunks (200+ px between fires),
+    // which without smoothing would produce visible frame jumps. We keep a
+    // target progress (updated on scroll) and a display progress (eased
+    // toward target each rAF), so the animation keeps playing smoothly
+    // even when scroll events are sparse.
+    let targetProgress = 0;
+    let displayProgress = 0;
+    let rafRunning = false;
+    const LERP = 0.22; // per-frame easing — ~200ms to cover a jump at 60fps
+
+    const tick = () => {
+      const diff = targetProgress - displayProgress;
+      if (Math.abs(diff) < 0.0008) {
+        displayProgress = targetProgress;
+        rafRunning = false;
+      } else {
+        displayProgress += diff * LERP;
+        rafRunning = true;
+        requestAnimationFrame(tick);
+      }
+      const idx = Math.min(frameCount - 1, Math.floor(displayProgress * frameCount));
       if (idx !== currentFrame) {
         currentFrame = idx;
         drawFrame(idx);
       }
-      // Annotation cards: light up the last card whose data-at <= progress
-      let active = 0;
-      annotations.forEach((c, i) => {
-        const at = parseFloat(c.dataset.at || '0');
-        if (progress >= at) active = i;
-      });
-      annotations.forEach((c, i) => c.classList.toggle('active', i === active));
+      // Annotation cards (if present) light up by progress threshold
+      if (annotations.length) {
+        let active = 0;
+        annotations.forEach((c, i) => {
+          const at = parseFloat(c.dataset.at || '0');
+          if (displayProgress >= at) active = i;
+        });
+        annotations.forEach((c, i) => c.classList.toggle('active', i === active));
+      }
     };
 
-    const onScroll = () => {
-      if (!pending) {
-        pending = true;
-        requestAnimationFrame(updateProgress);
+    const updateProgress = () => {
+      targetProgress = calcProgress();
+      if (!rafRunning) {
+        rafRunning = true;
+        requestAnimationFrame(tick);
+      }
+    };
+
+    const onScroll = updateProgress; // cheap — just reads rect + updates target
+
+    // Immediate-snap variant for initial paint / resize — don't ease from 0.
+    const snapProgress = () => {
+      targetProgress = calcProgress();
+      displayProgress = targetProgress;
+      const idx = Math.min(frameCount - 1, Math.floor(displayProgress * frameCount));
+      if (idx !== currentFrame) {
+        currentFrame = idx;
+        drawFrame(idx);
       }
     };
 
