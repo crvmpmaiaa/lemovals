@@ -6,10 +6,28 @@
   <url><loc>https://lemovals.co.uk/services/clearances.html</loc><priority>0.8</priority></url>
   <url><loc>https://lemovals.co.uk/services/appliance-removals.html</loc><priority>0.8</priority></url>
   <url><loc>https://lemovals.co.uk/areas/</loc><priority>0.8</priority></url>
-  <url><loc>https://lemovals.co.uk/areas/l22-waterloo.html</loc><priority>0.7</priority></url>
-  <url><loc>https://lemovals.co.uk/areas/l23-crosby.html</loc><priority>0.7</priority></url>
-  <url><loc>https://lemovals.co.uk/areas/l37-formby.html</loc><priority>0.7</priority></url>
-  <url><loc>https://lemovals.co.uk/areas/pr8-ainsdale.html</loc><priority>0.7</priority></url>
+  <!-- Coastal Sefton — home patch -->
+  <url><loc>https://lemovals.co.uk/areas/l22-waterloo.html</loc><priority>0.8</priority></url>
+  <url><loc>https://lemovals.co.uk/areas/l23-crosby.html</loc><priority>0.8</priority></url>
+  <url><loc>https://lemovals.co.uk/areas/l29-thornton.html</loc><priority>0.7</priority></url>
+  <url><loc>https://lemovals.co.uk/areas/l31-maghull.html</loc><priority>0.7</priority></url>
+  <url><loc>https://lemovals.co.uk/areas/l37-formby.html</loc><priority>0.8</priority></url>
+  <url><loc>https://lemovals.co.uk/areas/l38-ince-blundell.html</loc><priority>0.7</priority></url>
+  <url><loc>https://lemovals.co.uk/areas/pr8-ainsdale.html</loc><priority>0.8</priority></url>
+  <url><loc>https://lemovals.co.uk/areas/pr9-southport.html</loc><priority>0.7</priority></url>
+  <!-- Liverpool city and suburbs -->
+  <url><loc>https://lemovals.co.uk/areas/l1-liverpool-city-centre.html</loc><priority>0.7</priority></url>
+  <url><loc>https://lemovals.co.uk/areas/l10-aintree.html</loc><priority>0.7</priority></url>
+  <url><loc>https://lemovals.co.uk/areas/l15-wavertree.html</loc><priority>0.7</priority></url>
+  <url><loc>https://lemovals.co.uk/areas/l17-aigburth.html</loc><priority>0.7</priority></url>
+  <url><loc>https://lemovals.co.uk/areas/l18-mossley-hill.html</loc><priority>0.7</priority></url>
+  <url><loc>https://lemovals.co.uk/areas/l19-garston.html</loc><priority>0.7</priority></url>
+  <url><loc>https://lemovals.co.uk/areas/l25-woolton.html</loc><priority>0.7</priority></url>
+  <url><loc>https://lemovals.co.uk/areas/l36-huyton.html</loc><priority>0.7</priority></url>
+  <!-- Further afield -->
+  <url><loc>https://lemovals.co.uk/areas/l39-ormskirk.html</loc><priority>0.6</priority></url>
+  <url><loc>https://lemovals.co.uk/areas/ch47-hoylake.html</loc><priority>0.6</priority></url>
+  <url><loc>https://lemovals.co.uk/areas/pr7-chorley.html</loc><priority>0.6</priority></url>
   <url><loc>https://lemovals.co.uk/about.html</loc><priority>0.6</priority></url>
   <url><loc>https://lemovals.co.uk/reviews.html</loc><priority>0.6</priority></url>
   <url><loc>https://lemovals.co.uk/contact.html</loc><priority>0.6</priority></url>
