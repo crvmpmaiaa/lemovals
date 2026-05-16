@@ -94,35 +94,34 @@
     });
   }
 
-  /* --- Quote form (mailto handler) --- */
+  /* --- Quote form (Netlify Forms) --- */
   const quoteForm = document.getElementById('quote-form');
   if (quoteForm) {
-    quoteForm.addEventListener('submit', (e) => {
+    quoteForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const data = new FormData(quoteForm);
-      const fields = {
-        name: data.get('name') || '',
-        phone: data.get('phone') || '',
-        from: data.get('from') || '',
-        to: data.get('to') || '',
-        date: data.get('date') || '',
-        notes: data.get('notes') || ''
-      };
-      const subject = encodeURIComponent(`Quote request from ${fields.name}`);
-      const body = encodeURIComponent(
-        `Name: ${fields.name}\n` +
-        `Phone: ${fields.phone}\n` +
-        `Moving from: ${fields.from}\n` +
-        `Moving to: ${fields.to}\n` +
-        `Preferred date: ${fields.date}\n` +
-        `Notes:\n${fields.notes}\n`
-      );
-      // Opens user's mail app. Replace with real endpoint when available.
-      window.location.href = `mailto:leighdcg@gmail.com?subject=${subject}&body=${body}`;
       const status = quoteForm.querySelector('.form-status');
-      if (status) {
-        status.className = 'form-status success';
-        status.textContent = 'Thanks — opening your email app. Alternatively call Leigh on 07479 222 460.';
+      const btn = quoteForm.querySelector('[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+      try {
+        const res = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(new FormData(quoteForm)).toString()
+        });
+        if (res.ok) {
+          quoteForm.reset();
+          status.className = 'form-status success';
+          status.textContent = 'Sent — Leigh will be in touch shortly. Or call 07479 222 460 if it\'s urgent.';
+        } else {
+          throw new Error('Network response not ok');
+        }
+      } catch {
+        status.className = 'form-status error';
+        status.textContent = 'Something went wrong. Please call Leigh directly on 07479 222 460.';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Send to Leigh';
       }
     });
   }
