@@ -118,7 +118,7 @@
         `Notes:\n${fields.notes}\n`
       );
       // Opens user's mail app. Replace with real endpoint when available.
-      window.location.href = `mailto:hello@lemovals.co.uk?subject=${subject}&body=${body}`;
+      window.location.href = `mailto:leighdcg@gmail.com?subject=${subject}&body=${body}`;
       const status = quoteForm.querySelector('.form-status');
       if (status) {
         status.className = 'form-status success';
